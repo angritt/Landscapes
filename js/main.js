@@ -9,3 +9,4 @@ var app = new Vue ({
     }
 })
     
+$('#map').vectorMap({map: 'europe_mill'});
