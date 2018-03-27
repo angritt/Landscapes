@@ -3,3 +3,10 @@
     width:240px;
     height: 240px;
 }
+.flex {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+}
+
+
