@@ -16,12 +16,20 @@
 
 <body>
 
-    <div id="vueApp" class="container">
-        <div class="row">
-            <h2>Instagram posts in Europe</h2>
+    <div id="vueApp">
+      <div id="startContainer"> 
+        <div id="header">
+            
         </div>
+        <div class="container">
+            <a href="#map" class="btn btn-info" data-toggle="collapse">Simple collapsible</a>  
 
-        <div id="map" style="width: 600px; height: 400px"></div>
+           <div id="map" class="collapse in ">
+                 blahblahblah
+           </div>  
+        </div>  
+
+  
 
         <div class="flex">
             <div v-for="pic in ratedPics">
@@ -29,6 +37,7 @@
                 <div>{{pic.node.edge_liked_by.count}}</div>
             </div>
         </div>
+      </div>
     </div>
 
 

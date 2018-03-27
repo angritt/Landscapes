@@ -1,12 +1,55 @@
+#startContainer{
+    height:100vh;
+    width: auto;
+    max-width: 100%;
+/*
+    display:grid;
+    grid-template-rows: [row1]20% [row2]60% [row3]20%;
+    grid-template-areas: 
+        "header"
+        "main"
+        "footer";
+*/
+    
+}
+
+#header{
+    grid-area: header
+}
+
+#map{
+    grid-area:main;
+    height:400px;
+    width: 400px;
+    max-width: 100%;
+    margin: 0 auto; /*this will cause the div to be in the center*/
+}
+
+#footer{
+   
+}
+
 .img_container{
     position:absolute;
     width:240px;
     height: 240px;
+
 }
 .flex {
     display: flex;
-    flex-grow: 1;
-    flex-direction: column;
+/*    flex-grow: 1;*/
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+   
+}
+
+.img{
+    border: 2px solid grey;
+    margin-top: 10px;
+    margin-right: 5px;
+    margin-left: 5px;
 }
 
 
