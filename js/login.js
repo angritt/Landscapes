@@ -9,7 +9,9 @@ var apiApp = new Vue({
     data: {
         access_token: "",
         contries_location: {},
-        location_response: ""
+        location_response: "",
+        lat: "",
+        long: ""
     },
     
     methods: {
@@ -19,9 +21,16 @@ var apiApp = new Vue({
         },
         
         getLocationData: function() {
-            $.getJSON("https://api.myjson.com/bins/l9twf", function(data) {
-                apiApp.countries_location = data,
-                $.getJSON("https://api.instagram.com/v1/locations/search?lat=40.463667&lng=-3.74922&access_token=" + apiApp.access_token, function(data) {
+            $.getJSON("https://api.myjson.com/bins/ibjif", function(data) {
+                apiApp.countries_location = data;
+                var input =  "GB"
+                apiApp.countries_location.forEach(function(element){
+                    if (element.CountryCode === input) {
+                        apiApp.lat = element.CapitalLatitude
+                        apiApp.long = element.CapitalLongitude
+                    }
+                })
+                $.getJSON("https://api.instagram.com/v1/locations/search?lat=" + apiApp.lat +"&lng="+ apiApp.long +"&access_token=" + apiApp.access_token, function(data) {
                     apiApp.location_response = data
                 })
             })
