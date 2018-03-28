@@ -41,8 +41,8 @@ var apiApp = new Vue({
                             apiApp.selected_id = item.id
                         }
                         })
-                    $.getJSON("https://api.instagram.com/v1/locations/{" + apiApp.selected_id + "}/media/recent?access_token=" + apiApp.access_token, function (data) {
-                            apiApp.final_location_data = data.data
+                    $.getJSON("https://www.instagram.com/explore/locations/" + apiApp.selected_id + "/?__a=1", function (data) {
+                            apiApp.final_location_data.push(data)
                         })
 
                     
