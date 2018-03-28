@@ -11,7 +11,10 @@ var apiApp = new Vue({
         contries_location: {},
         location_response: "",
         lat: "",
-        long: ""
+        long: "",
+        country_name: "",
+        selected_id: "",
+        final_location_data: ""
     },
     
     methods: {
@@ -28,10 +31,20 @@ var apiApp = new Vue({
                     if (element.CountryCode === input) {
                         apiApp.lat = element.CapitalLatitude
                         apiApp.long = element.CapitalLongitude
+                        apiApp.country_name = element.CountryName
                     }
                 })
                 $.getJSON("https://api.instagram.com/v1/locations/search?lat=" + apiApp.lat +"&lng="+ apiApp.long +"&access_token=" + apiApp.access_token, function(data) {
                     apiApp.location_response = data
+                    apiApp.location_response.forEach(function(item){
+                        if (item.name.includes(apiApp.country_name)) {
+                              apiApp.selected_id = item.id
+                        }
+                        $.getJSON("https://api.instagram.com/v1/locations/" + apiApp.selected_id + "/media/recent?access_token=" + apiApp.access_token, function(data) {
+                                apiApp.final_location_data = data
+                            })
+                        
+                    })
                 })
             })
         }
