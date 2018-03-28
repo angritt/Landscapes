@@ -9,7 +9,8 @@ var app = new Vue({
         picturesData: [],
         ratedPics: [],
         url: "",
-        code_and_name: {}
+        code_and_name: {}, // object of jVectorMap
+        hashtags: []
     },
 
     created: function () {
@@ -43,7 +44,13 @@ var app = new Vue({
                 //            app.picturesData = data.graphql.hashtag.edge_hashtag_to_top_posts.edges;
                 app.picturesData = data.graphql.hashtag.edge_hashtag_to_media.edges;
                 app.ratedPics = app.decreasingOrder(app.picturesData);//this actually puts the elements in a decreasing order
-
+//                var textnode = 
+//                for(var i = 0; i < app.picturesData.length; i++ ){
+//                    
+//                }
+//                
+//                app.hashtags = app.picturesData.split("#")//separates the chosen array into subarrays of strings; each string begins with #
+//                console.log(app.hashtags);
 
 
             })
@@ -61,7 +68,7 @@ var app = new Vue({
             $("#map_button").click(function(){
                 $("#map").slideToggle();
                 $("#map_button").hide();
-                app.scrollDown();
+                app.scrollTop();
             })
         },
 
@@ -75,12 +82,16 @@ var app = new Vue({
             
         },
         
-        scrollDown: function() { // to go at the beginning of the page each time I show the map again
+        scrollTop: function() { // to go at the beginning of the page each time I show the map again
             $('html,body').animate({ // it will animate all html body 
             scrollTop: $('#startContainer').offset().top}, 'slow'); // get the other id where you want the page to scroll to. then offset the page and slow the animation.the only options available to offset are top and left for some reason. 
                
 
             },
+        
+//        getHashtags: function(array) {
+//            array.split("#")//separates the chosen array into subarray of strings; each string begisn with #
+//        }
         
 
     },
