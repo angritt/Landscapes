@@ -19,10 +19,13 @@
             <h2>Please log in to access our App</h2>
         </div>
           <div class="row">
-              <a href="https://api.instagram.com/oauth/authorize/?client_id=2260f74aec874e31895b9f2c641842ac&redirect_uri=https://eloisa-r.github.io/Landscapes/login.html&response_type=token" class="btn">Login</a>
+              <a href="https://api.instagram.com/oauth/authorize/?client_id=2260f74aec874e31895b9f2c641842ac&redirect_uri=https://eloisa-r.github.io/Landscapes/login.html&response_type=token&scope=public_content" class="btn">Login</a>
           </div>
 
         <div class="row">
+               <div v-for="item in location_response">
+                   <div>{{ item }}</div>
+               </div>
 
         </div>
     </div>
