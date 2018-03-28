@@ -31,6 +31,7 @@ var apiApp = new Vue({
     created: function() {
         if (window.location.href.includes("#access_token")) {
             this.access_token = this.getAccessToken()
+            this.getLocationData()
         }
         
         
