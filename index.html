@@ -9,7 +9,7 @@
     <!-- BOOTSTRAP: the following is for MOBILE: ensure proper rendering and touch-zooming -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--    bootstrap 4.0; messes with the button, setting its font size-->
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<!--            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">-->
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/jquery-jvectormap-2.0.3.css">
 </head>
@@ -29,8 +29,8 @@
            </div>  
         </div>  
         <div id="footer">
-            <ul v-for="pic in ratedPics" id="hashtagsList">
-                <li><input type="button" v-bind:value="pic.node.edge_liked_by.count"></li>
+            <ul id="hashtagsList" class="nav nav-tabs">
+                <li v-for="pic in ratedPics" ><input type="button" v-bind:value="pic.node.edge_liked_by.count"></li>
             </ul>
         </div>
 
