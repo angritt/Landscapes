@@ -24,8 +24,8 @@
 
         <div class="row">
                <div v-for="item in final_location_data">
-<!--                <img v-bind:src="item.node.thumbnail_resources[1].src" class="img">-->
-                <div>{{item}}</div>
+                <img v-bind:src="item.node.thumbnail_resources[1].src" class="img">
+                <div>{{item.node.edge_liked_by.count}}</div>
                </div>
 
         </div>
