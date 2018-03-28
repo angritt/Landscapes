@@ -2,6 +2,12 @@
     height:100vh;
     width: auto;
     max-width: 100%;
+    
+/*
+    display:flex;
+    flex-direction: column;
+*/
+    
 /*
     display:grid;
     grid-template-rows: [row1]20% [row2]60% [row3]20%;
@@ -14,20 +20,40 @@
 }
 
 #header{
-    grid-area: header
+  height:10%;
+}
+
+.btn{
+    display:none;
 }
 
 #map{
-    grid-area:main;
+/*    grid-area:main;*/
     height:400px;
-    width: 400px;
-    max-width: 100%;
+    width: 100%;
     margin: 0 auto; /*this will cause the div to be in the center*/
 }
 
-#footer{
-   
+#mapContainer{
+/*
+    margin-top:20px;
+    margin-bottom:20px;
+*/
 }
+
+#footer{
+   height:15%;
+   background-color: aquamarine;
+   display: flex;
+   align-items: center;
+
+}
+
+#hashtagsList{
+    list-style-type:none;
+}
+
+
 
 .img_container{
     position:absolute;
