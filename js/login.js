@@ -42,7 +42,7 @@ var apiApp = new Vue({
                         }
                         })
                     $.getJSON("https://www.instagram.com/explore/locations/" + apiApp.selected_id + "/?__a=1", function (data) {
-                            apiApp.final_location_data.push(data)
+                            apiApp.final_location_data = data.graphql.hashtag.edge_hashtag_to_top_posts.edges
                         })
 
                     
