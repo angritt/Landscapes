@@ -30,14 +30,15 @@
         </div>  
         <div id="footer">
             <ul id="hashtagsList" class="nav nav-tabs">
-                <li v-for="pic in ratedPics" ><input type="button" v-bind:value="pic.node.edge_liked_by.count"></li>
+               <li><input type="button" v-on:click="hashtagFilter" id="all_filter"value="All"></li>
+                <li v-for="hashtag in sorted_hashtags_array.slice(1,10)" ><input type="button" v-on:click="hashtagFilter" v-bind:value="hashtag.value"></li>
             </ul>
         </div>
 
   
         
         <div class="flex">
-            <div v-for="pic in ratedPics">
+            <div v-for="pic in ratedPics" v-if="filterValue == '' || filterValue == 'All' || pic.node.edge_media_to_caption.edges[0].node.text.includes(filterValue)">
                 <img v-bind:src="pic.node.thumbnail_resources[1].src" class="img">
                 <div>{{pic.node.edge_liked_by.count}}</div>
             </div>
