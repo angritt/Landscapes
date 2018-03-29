@@ -9,7 +9,7 @@
     <!-- BOOTSTRAP: the following is for MOBILE: ensure proper rendering and touch-zooming -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--    bootstrap 4.0; messes with the button, setting its font size-->
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<!--            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">-->
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/jquery-jvectormap-2.0.3.css">
 </head>
@@ -22,22 +22,29 @@
             
         </div>
         <div class="container" id="mapContainer">
-            <a href="#map" class="btn btn-info" id="map_button"> get the map back</a>  
 
            <div id="map" class="collapse in ">
+
 <!--              <h1>Instagram Geo Navigator</h1>-->
            </div>  
         </div>  
         <div id="footer">
-            <ul v-for="pic in ratedPics" id="hashtagsList">
-                <li><input type="button" v-bind:value="pic.node.edge_liked_by.count"></li>
+            <ul id="hashtagsList" class="nav nav-pills">
+                <li><a href="#map" class="btn btn-info" id="map_button">  map </a> </li>
+
+               <li><input type="button" v-on:click="hashtagFilter" id="all_filter"value="All"></li>
+                <li v-for="hashtag in sorted_hashtags_array.slice(1,10)" >
+<!--                  <a href="javascript:{}"  v-on:click="hashtagFilter" role="button"  class="btn btn-info">{{hashtag.value}}</a>-->
+                <input type="button"  v-on:click="hashtagFilter" v-bind:value="hashtag.value">
+                </li>
             </ul>
+
         </div>
 
   
         
         <div class="flex">
-            <div v-for="pic in ratedPics">
+            <div v-for="pic in ratedPics" v-if="filterValue == '' || filterValue == 'All' || pic.node.edge_media_to_caption.edges[0].node.text.includes(filterValue)">
                 <img v-bind:src="pic.node.thumbnail_resources[1].src" class="img">
                 <div>{{pic.node.edge_liked_by.count}}</div>
             </div>
