@@ -19,6 +19,10 @@
     
 }
 
+body{
+    background-color: white
+}
+
 #header{
   height:10%;
 }
@@ -43,7 +47,7 @@
 
 #footer{
    height:15%;
-   background-color: aquamarine;
+   background-color:white;
 /*
    display: flex;
    align-items: center;
@@ -51,8 +55,12 @@
 
 }
 
+#map_button{
+    display: none;
+}
+
 #hashtagsList{
-    list-style-type:none;
+/*    list-style-type:none;*/
 }
 
 
