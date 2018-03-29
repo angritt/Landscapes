@@ -27,9 +27,11 @@ body{
   height:10%;
 }
 
+/*
 .btn{
     display:none;
 }
+*/
 
 #map{
 /*    grid-area:main;*/
@@ -46,7 +48,7 @@ body{
 }
 
 #footer{
-   height:15%;
+/*   height:15%;*/
    background-color:white;
 /*
    display: flex;
@@ -59,9 +61,11 @@ body{
     display: none;
 }
 
+/*
 #hashtagsList{
-/*    list-style-type:none;*/
+    list-style-type:none;
 }
+*/
 
 
 
