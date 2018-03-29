@@ -29,14 +29,10 @@
            </div>  
         </div>  
         <div id="footer">
-            <ul id="hashtagsList" class="nav nav-pills">
-                <li><a href="#map" class="btn btn-info" id="map_button">  map </a> </li>
-
-               <li><input type="button" v-on:click="hashtagFilter" id="all_filter"value="All"></li>
-                <li v-for="hashtag in sorted_hashtags_array.slice(1,10)" >
-<!--                  <a href="javascript:{}"  v-on:click="hashtagFilter" role="button"  class="btn btn-info">{{hashtag.value}}</a>-->
-                <input type="button"  v-on:click="hashtagFilter" v-bind:value="hashtag.value">
-                </li>
+            <ul id="hashtagsList" class="nav-pills nav-justified">
+                <li><a href="#map" class="btn btn-primary" id="map_button">  Show Map </a> </li>
+                <li v-for="hashtag in sorted_hashtags_array.slice(1,10)" ><input type="button" v-on:click="hashtagFilter" v-bind:value="hashtag.value" class="btn btn-default"></li>
+                <li><input type="button" class="btn btn-info" v-on:click="hashtagFilter" id="all_filter" value="All"></li>
             </ul>
 
         </div>
@@ -46,7 +42,7 @@
         <div class="flex">
             <div v-for="pic in ratedPics" v-if="filterValue == '' || filterValue == 'All' || pic.node.edge_media_to_caption.edges[0].node.text.includes(filterValue)">
                 <img v-bind:src="pic.node.thumbnail_resources[1].src" class="img">
-                <div>{{pic.node.edge_liked_by.count}}</div>
+                <div><span class="badge">{{pic.node.edge_liked_by.count}}</span></div>
             </div>
         </div>
     </div>
