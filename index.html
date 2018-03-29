@@ -19,7 +19,7 @@
     <div id="vueApp">
       <div id="startContainer"> 
         <div id="header">
-            
+            <h1>Instagram Geo Navigator<span id="countryName"></span></h1>
         </div>
         <div class="container" id="mapContainer">
 
@@ -29,21 +29,23 @@
            </div>  
         </div>  
         <div id="footer">
+           
             <ul id="hashtagsList" class="nav-pills nav-justified">
-                <li><a href="#map" class="btn btn-primary" id="map_button">  Show Map </a> </li>
+                <li><a href="#map" class="btn btn-primary" id="map_button"> </a> </li>
                 <li v-for="hashtag in sorted_hashtags_array.slice(1,10)" ><input type="button" v-on:click="hashtagFilter" v-bind:value="hashtag.value" class="btn btn-default"></li>
-                <li><input type="button" class="btn btn-info" v-on:click="hashtagFilter" id="all_filter" value="All"></li>
+                <li><input type="button" class="btn btn-primary" v-on:click="hashtagFilter" id="all_filter" value="All"></li>
             </ul>
-
+          
         </div>
 <!--        following: a "please wait" box, actually the result is better without-->
         
-        <div v-if="ratedPics.length === 0" id="waitBox">
+        <div  v-if="ratedPics.length === 0" id="waitBox">
             <img id = "please_wait" src="https://www.citizenservices.gov.bt/DOPPublic/Images/loader.gif" alt="please wait">
+
         </div>
   
         
-        <div class="flex">
+        <div class="flex" id="picsContainer">
             <div v-for="pic in ratedPics" v-if="filterValue == '' || filterValue == 'All' || pic.node.edge_media_to_caption.edges[0].node.text.includes(filterValue)">
                 <img v-bind:src="pic.node.thumbnail_resources[1].src" class="img">
                 <div><span class="badge">{{pic.node.edge_liked_by.count}}</span></div>
