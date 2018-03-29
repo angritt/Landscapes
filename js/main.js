@@ -53,12 +53,12 @@ var app = new Vue({
                 app.picturesData = data.graphql.hashtag.edge_hashtag_to_media.edges;
                 app.ratedPics = app.decreasingOrder(app.picturesData);//this actually puts the elements in a decreasing order
                 app.sorted_hashtags_array = app.getSortedHashtags(app.ratedPics)
-                    
-
+console.log(app.ratedPics[1]);                    
 
             })
 
         },
+                
         
         
         hide_show_map : function () {
