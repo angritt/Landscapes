@@ -48,18 +48,25 @@ body{
 }
 
 #footer{
-/*   height:15%;*/
+   margin-top:1.2em;
    background-color:white;
-/*
    display: flex;
    align-items: center;
-*/
-
+   justify-content: center;
+    
 }
+
 
 #map_button{
     display: none;
+    height:34px !important;
 }
+
+/*
+#map_hide{
+    display:none
+}
+*/
 
 /*
 #hashtagsList{
@@ -68,6 +75,24 @@ body{
 */
 
 
+
+#waitBox{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: none;
+    
+}
+
+#please_wait{
+    margin-left:40%;
+}
+
+
+.img{
+    width:240px;
+    height:240px;
+}
 
 .img_container{
     position:absolute;

@@ -34,10 +34,13 @@ var app = new Vue({
                         app.filterValue = "";
                         app.sorted_hashtags_array = []
                         app.hideMap();
+                        $("#map_button").show();
+                        $("#waitBox").show();
+                        $("#countryName").html(": #" + app.code_and_name[code])
                     }
                 })
-                app.showMap(); //I call it here, activate it later, by clicking the button to bring the map back
-                
+//                app.showMap(); //I call it here, activate it later, by clicking the button to bring the map back
+                app.hide_show_map();
              })
 
         },
@@ -57,23 +60,42 @@ console.log(app.ratedPics[1]);
         },
                 
         
-        hideMap: function () {//function to hide the map and show the toggle button
-            $("#map").slideToggle();
-            $("#map_button").show();
-            $("#all_filter").show();
-//            window.location.href="index.html#picsContainer"
         
+        hide_show_map : function () {
+            $("#map_button").click(function(){
+                if($("#map_button").html()=="Hide Map"){
+                    app.hideMap();
+                }
+//                if($("#map_button").html()=="Show Map"){// this doesn't work, I don't understand why
+//                    app.showMap(); // 
+//                }
+                else{app.showMap()}
+            })
+        },
+        
+        
+        hideMap: function () {//function to hide the map and show the toggle button
+            $("#map").hide(2000);
+//            $("map_button").show();
+//            $("#map").slideToggle(2000);
+            $("#map_button").html("Show Map");
+            $("#all_filter").show();
+            $("#picsContainer").show();
+//            window.location.href="index.html#picsContainer"
         },
         
         showMap: function() {// shows the map on button click
-            $("#map_button").click(function(){
-                $("#map").slideToggle();
-                $("#map_button").hide();
+//            $("#map_button").click(function(){
+//                $("#map").slideToggle(2000);
+                $("#map").show(2000);
+                $("#map_button").html("Hide Map");
                 $("#all_filter").show();
+                $("#picsContainer").hide();
+                
                 app.scrollTop();
-            })
+//            })
         },
-
+        
         decreasingOrder: function (array) {
             var array_copy = array.slice()
             array_copy.sort(function (a, b) {
@@ -120,7 +142,13 @@ console.log(app.ratedPics[1]);
         },
         
         hashtagFilter: function(event) {
-            app.filterValue = $(event.target).val()
+            app.filterValue = $(event.target).val();
+            
+            // make the map disappear when clicking on the ashtag button:
+            $("#map").hide(2000);
+//            $("#map_button").show();
+            $("#map_button").html("Show Map")
+            $("#picsContainer").show();
             
         }
 
