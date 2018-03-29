@@ -58,7 +58,8 @@ var app = new Vue({
         },
         
         hideMap: function () {//function to hide the map and show the toggle button
-            $("#map").slideToggle();
+//            $("#map").slideToggle();
+            $("#map").hide(2000);
             $("#map_button").show();
             $("#all_filter").show();
 //            window.location.href="index.html#picsContainer"
@@ -67,7 +68,8 @@ var app = new Vue({
         
         showMap: function() {// shows the map on button click
             $("#map_button").click(function(){
-                $("#map").slideToggle();
+//                $("#map").slideToggle();
+                $("#map").show(2000)
                 $("#map_button").hide();
                 $("#all_filter").show();
                 app.scrollTop();
@@ -120,7 +122,11 @@ var app = new Vue({
         },
         
         hashtagFilter: function(event) {
-            app.filterValue = $(event.target).val()
+            app.filterValue = $(event.target).val();
+            
+            // make the map disappear when clicking on the ashtag button:
+            $("#map").hide(2000);
+            $("#map_button").show();
             
         }
 

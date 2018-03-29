@@ -36,7 +36,11 @@
             </ul>
 
         </div>
-
+<!--        following: a "please wait" box, actually the result is better without-->
+        
+        <div v-if="ratedPics.length === 0" id="waitBox">
+            <img id = "please_wait" src="https://www.citizenservices.gov.bt/DOPPublic/Images/loader.gif" alt="please wait">
+        </div>
   
         
         <div class="flex">
