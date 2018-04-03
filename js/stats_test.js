@@ -16,7 +16,9 @@ var apiApp = new Vue({
         filterValue: "",
         contries_location: {},
         access_token: "",
-        location_response: []
+        location_response: [],
+        country_name: "",
+        capital_name: ""
     },
 
     created: function () {
@@ -44,6 +46,8 @@ var apiApp = new Vue({
                             if (element.CountryCode === code) {
                                 apiApp.lat = element.CapitalLatitude
                                 apiApp.long = element.CapitalLongitude
+                                apiApp.country_name = element.CountryName
+                                apiApp.capital_name = element.CapitalName
                             }
                         })
                         apiApp.getPictures(apiApp.lat, apiApp.long);
@@ -52,8 +56,8 @@ var apiApp = new Vue({
                         apiApp.hideMap();
                         $("#map_button").show();
                         $("#waitBox").show(); //i had to do this instead of calling it in the function "please_wait"
-                        $("#footer").hide(); // why does it work here and not at the beginning of the function???
-
+                        $("#footer").hide();
+                        $("#cityName").html(": " + apiApp.capital_name)
                     }
                 })
                 apiApp.hide_show_map();
@@ -65,8 +69,12 @@ var apiApp = new Vue({
             apiApp.ratedPics = []
             $.getJSON("https://api.instagram.com/v1/locations/search?lat=" + lat + "&lng=" + long + "&access_token=" + apiApp.access_token, function (data) {
                         apiApp.location_response = data.data
-
-                        apiApp.selected_id = apiApp.location_response[0].id
+                        
+                        apiApp.location_response.forEach(function(element) {
+                            if (element.name === (apiApp.capital_name + ", " + apiApp.country_name)) {
+                                apiApp.selected_id = element.id
+                            }
+                        })
                          
                         console.log(apiApp.selected_id)
 
