@@ -76,7 +76,7 @@
                                     <button type="button" class="close" data-dismiss="modal">&times;</button> Likes: <span class="badge">{{pic.node.edge_liked_by.count}}</span>
                                 </div>
                                 <div class="modal-body">
-                                    <img v-bind:src="pic.node.thumbnail_resources[3].src" class="img">
+                                    <img class="img-responsive" v-bind:src="pic.node.thumbnail_resources[3].src" class="img">
                                 </div>
                                 <div class="modal-footer">
                                     <p class="modal-title" style="float: left">{{pic.node.edge_media_to_caption.edges[0].node.text}}</p>
