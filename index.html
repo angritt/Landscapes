@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <title>Instagram App</title>
     <!-- BOOTSTRAP: this CDN(Contend Delivery Network) is the latest compiled and minified CSS; CDN used when you don't download Bootstrap -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">-->
     <link rel="stylesheet" href="css/jquery-jvectormap-2.0.3.css">
     <!-- BOOTSTRAP: the following is for MOBILE: ensure proper rendering and touch-zooming -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -28,13 +30,11 @@
            
 
           
-            <ul id="hashtagsList" class="col-12 nav nav-pills nav-justified">
-                <li class="nav-link active" id="map_button"></li>
-                <li v-for="hashtag in sorted_hashtags_array.slice(1,10)" class="item">
-                <input type="button" v-on:click="hashtagFilter" v-bind:value="hashtag.value" class="btn btn-outline-secondary"></li>
-                <input type="button" class="btn btn-primary item" v-on:click="hashtagFilter" id="all_filter" value="All">
-            </ul>
-          
+          <ul  id="hashtagsList" class="nav-pills nav-justified">
+                <li><a href="#map" class="btn btn-primary" id="map_button"> </a> </li>
+                <li v-for="hashtag in sorted_hashtags_array.slice(1,10)" ><input type="button" v-on:click="hashtagFilter" v-bind:value="hashtag.value" class="btn btn-default"></li>
+                <li><input type="button" class="btn btn-primary" v-on:click="hashtagFilter" id="all_filter" value="All"></li>
+          </ul>
         </div>
         
    
@@ -84,8 +84,9 @@
     <!--  jQuery Library-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <!--    -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<!--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>-->
     <!-- Following: Vue link to load Vue library DEVELOPMENT MODE!!!  -->
     <script src="https://unpkg.com/vue/dist/vue.js"></script>
     <!-- FOLLOWING: PRODUCTION VERSION OF VUE, for when the website is deployed -->
