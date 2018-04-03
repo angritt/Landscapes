@@ -3,23 +3,32 @@
 /*eslint "no-console": "off" */
 
 
-
 var apiApp = new Vue({
     el: '#apiApp',
     data: {
-        access_token: "",
-        contries_location: {},
-        european_countries: {},
-        location_response: [],
-        lat: "",
-        long: "",
-        country_name: "",
-        city_name: "",
-        selected_id: "",
-        final_location_data: [],
-        map_cities_data: {},
+        picturesData: [],
+        ratedPics: [],
+        url: "",
+        code_and_name: {}, // object of jVectorMap
         hashtags_dict: {},
-        hashtags_array: []
+        hashtags_array: [],
+        sorted_hashtags_array: [],
+        filterValue: "",
+        contries_location: {},
+        access_token: "",
+        location_response: [],
+        country_name: "",
+        capital_name: ""
+    },
+
+    created: function () {
+        if (window.location.href.includes("#access_token")) {
+            this.access_token = this.getAccessToken()
+            $("#Logindiv").hide()
+            $("#startContainer").show()
+            this.displayMap();
+        }
+
     },
 
     methods: {
@@ -27,80 +36,138 @@ var apiApp = new Vue({
             return window.location.href.split("#access_token=")[1]
         },
 
-        getDataForAllCities: function () {
-            $.getJSON("https://api.myjson.com/bins/12j0h7", function (data) {
-                apiApp.european_countries = data
-                $.getJSON("https://api.myjson.com/bins/ibjif", function (data) {
-                    apiApp.countries_location = data;
-                    for (var key in apiApp.european_countries) {
-                        apiApp.getLocationData(key, apiApp.countries_location)
+        displayMap: function () { // on load: show map ; on click: show pics, hide map, show button to display map again
+            $.getJSON("https://api.myjson.com/bins/ibjif", function (data) {
+                apiApp.countries_location = data;
+                $('#map').vectorMap({
+                    map: 'europe_mill',
+                    onRegionClick: function (e, code) {
+                        apiApp.countries_location.forEach(function (element) {
+                            if (code === "XK") {
+                                if (element.CountryCode === "KO") {
+                                    apiApp.lat = element.CapitalLatitude
+                                    apiApp.long = element.CapitalLongitude
+                                    apiApp.country_name = element.CountryName
+                                    apiApp.capital_name = element.CapitalName
+                                }
+                            } else {
+                                if (element.CountryCode === code) {
+                                    apiApp.lat = element.CapitalLatitude
+                                    apiApp.long = element.CapitalLongitude
+                                    apiApp.country_name = element.CountryName
+                                    apiApp.capital_name = element.CapitalName
+                                }
+                            }
+                        })
+                        apiApp.getPictures(apiApp.lat, apiApp.long);
+                        apiApp.filterValue = "";
+                        apiApp.sorted_hashtags_array = []
+                        apiApp.hideMap();
+                        $("#map_button").show();
+                        $("#waitBox").show(); //i had to do this instead of calling it in the function "please_wait"
+                        $("#footer").hide();
+                        $("#cityName").html("in " + apiApp.capital_name)
                     }
-                    console.log(apiApp.map_cities_data)
                 })
-
+                apiApp.hide_show_map();
             })
+
         },
 
-        getLocationData: function (country, array) {
-            array.forEach(function (element) {
-                if (element.CountryCode === country) {
-                    apiApp.lat = element.CapitalLatitude
-                    apiApp.long = element.CapitalLongitude
-                    apiApp.country_name = element.CountryName
-                    apiApp.city_name = element.CapitalName
-                    apiApp.map_cities_data[element.CapitalName] = {
-                        "total_posts": 0,
-                        "post_frequency": 0,
-                        "most_used_hasthags": [],
-                        "average_text_length": 0,
-                        "average_num_hashtags": 0
-                    }
-                }
-            })
-            $.getJSON("https://api.instagram.com/v1/locations/search?lat=" + apiApp.lat + "&lng=" + apiApp.long + "&access_token=" + apiApp.access_token, function (data) {
+        getPictures: function (lat, long) {
+            apiApp.ratedPics = []
+            $.getJSON("https://api.instagram.com/v1/locations/search?lat=" + lat + "&lng=" + long + "&access_token=" + apiApp.access_token, function (data) {
                 apiApp.location_response = data.data
-                apiApp.location_response.forEach(function (item) {
-                    if (item.name.includes(apiApp.country_name)) {
-                        apiApp.selected_id = item.id
+                apiApp.selected_id = ""
+                apiApp.location_response.forEach(function (element) {
+                    if (element.name === (apiApp.capital_name + ", " + apiApp.country_name)) {
+                        apiApp.selected_id = element.id
                     }
                 })
+
+                if (apiApp.selected_id.length === 0) {
+                    apiApp.selected_id = apiApp.location_response[1].id
+//                    for (var i = 0; i < apiApp.location_response.length; i++) {
+//                        if (apiApp.location_response[i].id != 0) {
+//                            apiApp.selected_id = apiApp.location_response[i].id;
+//                            break;
+//                        }
+
+//                    }
+                }
+
                 $.getJSON("https://www.instagram.com/explore/locations/" + apiApp.selected_id + "/?__a=1", function (data) {
-                    apiApp.final_location_data = data.graphql.location.edge_location_to_media
-                    apiApp.getTotalPosts(apiApp.city_name, apiApp.final_location_data)
-                    apiApp.getAverageNumHashtags(apiApp.city_name, apiApp.final_location_data)
-                    apiApp.mostUsedHashtags(apiApp.city_name, apiApp.final_location_data)
-                    apiApp.averageTextLength(apiApp.city_name, apiApp.final_location_data)
+                    apiApp.picturesData = data.graphql.location.edge_location_to_media.edges;
+                    apiApp.ratedPics = apiApp.decreasingOrder(apiApp.picturesData); //this actually puts the elements in a decreasing order
+
+                    apiApp.sorted_hashtags_array = apiApp.getSortedHashtags(apiApp.ratedPics)
+                    apiApp.please_wait();
                 })
+
+
+
+
 
 
             })
 
         },
-        getTotalPosts: function (city, data) {
-            apiApp.map_cities_data[city].totalposts = data.count
+
+        please_wait: function () {
+            if ($("#pic")) {
+                $("#waitBox").hide();
+                $("#footer").show();
+            }
         },
 
-        getAverageNumHashtags: function (city, data) {
-            var hashtag_number_arr = []
-            data.edges.forEach(function (element) {
-                if (element.node.edge_media_to_caption.edges.length != 0) {
-                    var text = element.node.edge_media_to_caption.edges[0].node.text
-                    var matches = text.match(/#\w+/g)
-                    if (matches != null) {
-                      hashtag_number_arr.push(matches.length)
-                    }
+        hide_show_map: function () {
+            $("#map_button").click(function () {
+                if ($("#map_button").html() == "Hide Map") {
+                    apiApp.hideMap();
+                } else {
+                    apiApp.showMap()
                 }
             })
-            var hastag_sum = hashtag_number_arr.reduce(function (a, b) {
-                return a + b
-            })
-            apiApp.map_cities_data[city].average_num_hashtags = hastag_sum / hashtag_number_arr.length
         },
 
-        mostUsedHashtags: function (city, data) {
+        hideMap: function () { //function to hide the map and show the toggle button
+            $("#map").hide(2000);
+            $("#map_button").html("Show Map");
+            $("#all_filter").show();
+            $("#picsContainer").show();
+        },
+
+        showMap: function () { // shows the map on button click
+            $("#map").show(2000);
+            $("#map_button").html("Hide Map");
+            $("#all_filter").show();
+            $("#picsContainer").hide();
+
+            apiApp.scrollTop();
+            //            })
+        },
+
+        decreasingOrder: function (array) {
+            var array_copy = array.slice()
+            array_copy.sort(function (a, b) {
+                return b.node.edge_liked_by.count - a.node.edge_liked_by.count
+            });
+            return array_copy
+        },
+
+
+        scrollTop: function () { // to go at the beginning of the page each time I show the map again
+            $('html,body').animate({ // it will animate all html body 
+                scrollTop: $('#startContainer').offset().top
+            }, 'slow'); // get the other id where you want the page to scroll to. then offset the page and slow the animation.the only options available to offset are top and left for some reason. 
+
+
+        },
+
+        getSortedHashtags: function (picsArray) {
             apiApp.hashtags_dict = {}
             apiApp.hashtags_array = []
-            data.edges.forEach(function (element) {
+            picsArray.forEach(function (element) {
                 if (element.node.edge_media_to_caption.edges.length != 0) {
                     var text = element.node.edge_media_to_caption.edges[0].node.text
                     var matches = text.match(/#\w+/g)
@@ -114,43 +181,37 @@ var apiApp = new Vue({
                         })
                     }
                 }
+                element.node.edge_media_to_caption.edges.push({
+                    "node": {
+                        "text": ""
+                    }
+                })
 
             })
             for (var key in apiApp.hashtags_dict) {
-                    apiApp.hashtags_array.push({"value": key, "count": apiApp.hashtags_dict[key]})
-                }
-                
-             apiApp.hashtags_array.sort(function(a,b) {
-                    return b.count - a.count
+                apiApp.hashtags_array.push({
+                    "value": key,
+                    "count": apiApp.hashtags_dict[key]
                 })
-            apiApp.map_cities_data[city].most_used_hasthags = apiApp.hashtags_array.slice(0,9)
-        },
-        
-        averageTextLength: function (city, data) {
-            var text_length_arr = []
-            data.edges.forEach(function (element) {
-                if (element.node.edge_media_to_caption.edges.length != 0) {
-                    var text = element.node.edge_media_to_caption.edges[0].node.text
-                    var text_length = text.length
-                    text_length_arr.push(text_length)
-                    }
-        })
-            var text_sum = text_length_arr.reduce(function (a, b) {
-                return a + b
+            }
+
+            return apiApp.hashtags_array.sort(function (a, b) {
+                return b.count - a.count
             })
-            apiApp.map_cities_data[city].average_text_length = text_sum / text_length_arr.length
+
+        },
+
+        hashtagFilter: function (event) {
+            apiApp.filterValue = $(event.target).val();
+
+            // make the map disappear when clicking on the ashtag button:
+            $("#map").hide(2000);
+            $("#map_button").html("Show Map")
+            $("#picsContainer").show();
+
         }
-                            
+
     },
 
-    created: function () {
-        if (window.location.href.includes("#access_token")) {
-            this.access_token = this.getAccessToken()
-            this.getDataForAllCities()
-            
-        }
-
-
-    },
 
 })

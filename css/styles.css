@@ -140,6 +140,13 @@ ul, menu, dir {
     background-color: rgba(255, 255, 255, 0.5);
 }
 
-h2 {
+h1, h2 {
     font-family: 'Quicksand', sans-serif;
+    padding-left: 2%;
 }
+
+h1{
+    font-weight: bold;
+}
+
+
