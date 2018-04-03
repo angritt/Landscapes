@@ -84,7 +84,7 @@ var apiApp = new Vue({
                         apiApp.selected_id = element.id
                     }
                 })
-
+                console.log(apiApp.location_response)
                 console.log(apiApp.selected_id)
 
                 $.getJSON("https://www.instagram.com/explore/locations/" + apiApp.selected_id + "/?__a=1", function (data) {
@@ -93,7 +93,6 @@ var apiApp = new Vue({
 
                     apiApp.sorted_hashtags_array = apiApp.getSortedHashtags(apiApp.ratedPics)
                     apiApp.please_wait();
-                    console.log(apiApp.ratedPics[1]);
                 })
 
 
