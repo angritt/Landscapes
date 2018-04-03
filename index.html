@@ -26,6 +26,8 @@
         </div>  
         <div id="footer" class="row">
            
+
+          
             <ul id="hashtagsList" class="col-12 nav nav-pills nav-justified">
                 <li class="nav-link active" id="map_button"></li>
                 <li v-for="hashtag in sorted_hashtags_array.slice(1,10)" class="item">
@@ -34,15 +36,17 @@
             </ul>
           
         </div>
-<!--        following: a "please wait" box, actually the result is better without-->
         
-        <div  v-if="ratedPics.length === 0" id="waitBox">
-            <img id = "please_wait" src="https://www.citizenservices.gov.bt/DOPPublic/Images/loader.gif" alt="please wait">
+   
 
-        </div>
-        
-        <div class="flex row" id="picsContainer">
-            <div v-for="pic in ratedPics" v-if="filterValue == '' || filterValue == 'All' || pic.node.edge_media_to_caption.edges[0].node.text.includes(filterValue)">
+        <div class="flex" id="picsContainer">
+<!--            I've putted the "please wait" inside the pics container-->
+            <div   id="waitBox">
+                <img id = "please_wait" src="https://www.citizenservices.gov.bt/DOPPublic/Images/loader.gif" alt="please wait">
+            </div>
+            
+            <div id="pic" v-for="pic in ratedPics" v-if="filterValue == '' || filterValue == 'All' || pic.node.edge_media_to_caption.edges[0].node.text.includes(filterValue)">
+
                 
                 <!-- Trigger the modal with a button -->
                 <button type="button" class="btn btn-link" data-toggle="modal" v-bind:data-target="'#' + pic.node.id"><img v-bind:src="pic.node.thumbnail_resources[1].src" class="img"></button>

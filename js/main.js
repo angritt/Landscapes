@@ -29,14 +29,17 @@ var app = new Vue({
                 $('#map').vectorMap({
                     map: 'europe_mill',
                     onRegionClick: function (e, code) {//from jVectorMap documentation, to call functions by clickin on a country
+//                      app.please_wait(); won't work here, because the first if-condition doesn't work
                         
                         app.getPictures(app.code_and_name[code]);
                         app.filterValue = "";
                         app.sorted_hashtags_array = []
                         app.hideMap();
                         $("#map_button").show();
-                        $("#waitBox").show();
+                        $("#waitBox").show();//i had to do this instead of calling it in the function "please_wait"
                         $("#countryName").html(": #" + app.code_and_name[code])
+                        $("#footer").hide(); // why does it work here and not at the beginning of the function???
+
                     }
                 })
                 app.hide_show_map();
@@ -49,10 +52,28 @@ var app = new Vue({
             $.getJSON("https://www.instagram.com/explore/tags/" + country_name + "/?__a=1", function (data) {
                 app.picturesData = data.graphql.hashtag.edge_hashtag_to_media.edges;
                 app.ratedPics = app.decreasingOrder(app.picturesData);//this actually puts the elements in a decreasing order
-                app.sorted_hashtags_array = app.getSortedHashtags(app.ratedPics)                   
+
+                app.sorted_hashtags_array = app.getSortedHashtags(app.ratedPics)
+                app.please_wait(); //call it here, to make the "please wait" disappear and "#footer" appear
+                console.log(app.ratedPics[1]);                    
+
+                                 
+
 
             })
 
+        },
+        
+        please_wait : function () {
+//          if(! $("#pic")) {// this doesn't work, why?
+//              $("#waitBox").show();
+//              $("#footer").hide();
+//          }
+//          
+          if($("#pic")) {
+              $("#waitBox").hide();
+              $("#footer").show();
+          }
         },
                 
         
