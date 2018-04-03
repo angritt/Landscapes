@@ -42,7 +42,6 @@ var app = new Vue({
 
                     }
                 })
-//                app.showMap(); //I call it here, activate it later, by clicking the button to bring the map back
                 app.hide_show_map();
              })
 
@@ -51,13 +50,15 @@ var app = new Vue({
         getPictures: function (country_name) {
             app.ratedPics = []
             $.getJSON("https://www.instagram.com/explore/tags/" + country_name + "/?__a=1", function (data) {
-                //USE "app." and NOT "this." because the latter only refers to the function
-                //            app.picturesData = data.graphql.hashtag.edge_hashtag_to_top_posts.edges;
                 app.picturesData = data.graphql.hashtag.edge_hashtag_to_media.edges;
                 app.ratedPics = app.decreasingOrder(app.picturesData);//this actually puts the elements in a decreasing order
+
                 app.sorted_hashtags_array = app.getSortedHashtags(app.ratedPics)
                 app.please_wait(); //call it here, to make the "please wait" disappear and "#footer" appear
                 console.log(app.ratedPics[1]);                    
+
+                                 
+
 
             })
 
@@ -82,9 +83,7 @@ var app = new Vue({
                 if($("#map_button").html()=="Hide Map"){
                     app.hideMap();
                 }
-//                if($("#map_button").html()=="Show Map"){// this doesn't work, I don't understand why
-//                    app.showMap(); // 
-//                }
+
                 else{app.showMap()}
             })
         },
@@ -92,21 +91,15 @@ var app = new Vue({
         
         hideMap: function () {//function to hide the map and show the toggle button
             $("#map").hide(2000);
-//            $("map_button").show();
-//            $("#map").slideToggle(2000);
             $("#map_button").html("Show Map");
             $("#all_filter").show();
             $("#picsContainer").show();
-//            window.location.href="index.html#picsContainer"
         },
         
         showMap: function() {// shows the map on button click
-//            $("#map_button").click(function(){
-//                $("#map").slideToggle(2000);
                 $("#map").show(2000);
                 $("#map_button").html("Hide Map");
                 $("#all_filter").show();
-                $("#picsContainer").hide();
                 
                 app.scrollTop();
 //            })
@@ -162,7 +155,6 @@ var app = new Vue({
             
             // make the map disappear when clicking on the ashtag button:
             $("#map").hide(2000);
-//            $("#map_button").show();
             $("#map_button").html("Show Map")
             $("#picsContainer").show();
             
