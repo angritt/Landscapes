@@ -9,27 +9,84 @@
     <!-- BOOTSTRAP: the following is for MOBILE: ensure proper rendering and touch-zooming -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/jquery-jvectormap-2.0.3.css">
+    <link rel="stylesheet" href="css/stats_styles.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
 
-    <div id="apiApp" class="container">
+    <div id="apiApp">
         <div class="row">
-            <h2>Instagram Stats in European Capitals</h2>
-            <h3>Please log in to access the stats!</h3>
+            <h2>Instagram data per capital city</h2>
+            
         </div>
-          <div class="row">
-              <a href="https://api.instagram.com/oauth/authorize/?client_id=2260f74aec874e31895b9f2c641842ac&redirect_uri=https://eloisa-r.github.io/Landscapes/stats.html&response_type=token&scope=public_content">Login</a>
-          </div>
+        <div class="row" id="Logindiv">
+           <h3>Please log in to access the data per capital city!</h3>
+            <a href="https://api.instagram.com/oauth/authorize/?client_id=2260f74aec874e31895b9f2c641842ac&redirect_uri=https://eloisa-r.github.io/Landscapes/stats.html&response_type=token&scope=public_content">Login</a>
+        </div>
 
-        <div class="row">
-               <div v-for="item in final_location_data">
-                <img v-bind:src="item.node.thumbnail_resources[1].src" class="img">
-                <div>{{item.node.edge_liked_by.count}}</div>
-               </div>
+        <div id="startContainer" class="container">
+            <div class="row" id="mapContainer">
+
+                <div id="map">
+                </div>
+            </div>
+            <div id="footer" class="row">
+
+
+
+                <ul id="hashtagsList" class="nav-pills nav-justified">
+                    <li><a href="#map" class="btn btn-primary" id="map_button"> </a> </li>
+                    <li v-for="hashtag in sorted_hashtags_array.slice(1,10)"><input type="button" v-on:click="hashtagFilter" v-bind:value="hashtag.value" class="btn btn-default"></li>
+                    <li><input type="button" class="btn btn-primary" v-on:click="hashtagFilter" id="all_filter" value="All"></li>
+                </ul>
+            </div>
+
+
+
+            <div class="flex" id="picsContainer">
+                <!--            I've putted the "please wait" inside the pics container-->
+                <div id="waitBox">
+                    <img id="please_wait" src="https://www.citizenservices.gov.bt/DOPPublic/Images/loader.gif" alt="please wait">
+                </div>
+
+                <div id="pic" v-for="pic in ratedPics" v-if="filterValue == '' || filterValue == 'All' || pic.node.edge_media_to_caption.edges[0].node.text.includes(filterValue)">
+
+
+                    <!-- Trigger the modal with a button -->
+                    <button type="button" class="btn btn-link" data-toggle="modal" v-bind:data-target="'#' + pic.node.id"><img v-bind:src="pic.node.thumbnail_resources[1].src" class="img"></button>
+
+
+                    <!-- Modal -->
+                    <div v-bind:id="pic.node.id" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button> Likes: <span class="badge">{{pic.node.edge_liked_by.count}}</span>
+                                </div>
+                                <div class="modal-body">
+                                    <img v-bind:src="pic.node.thumbnail_resources[3].src" class="img">
+                                </div>
+                                <div class="modal-footer">
+                                    <p class="modal-title" style="float: left">{{pic.node.edge_media_to_caption.edges[0].node.text}}</p>
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
 
         </div>
     </div>
+
+
+
 
 
     <!--  jQuery Library-->
@@ -41,7 +98,7 @@
 
     <script src="js/jquery-jvectormap-2.0.3.min.js"></script>
     <script src="js/jquery-jvectormap-europe-mill.js"></script>
-    <script src="js/stats.js"></script>
+    <script src="js/stats_test.js"></script>
 </body>
 
 </html>

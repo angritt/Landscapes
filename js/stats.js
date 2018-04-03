@@ -62,10 +62,9 @@ var apiApp = new Vue({
                 apiApp.location_response.forEach(function (item) {
                     if (item.name.includes(apiApp.country_name)) {
                         apiApp.selected_id = item.id
-                        console.log(apiApp.selected_id)
                     }
                 })
-                console.log(apiApp.selected_id)
+
                 $.getJSON("https://www.instagram.com/explore/locations/" + apiApp.selected_id + "/?__a=1", function (data) {
                     apiApp.final_location_data = data.graphql.location.edge_location_to_media
                     apiApp.getTotalPosts(apiApp.city_name, apiApp.final_location_data)
@@ -89,7 +88,7 @@ var apiApp = new Vue({
                     var text = element.node.edge_media_to_caption.edges[0].node.text
                     var matches = text.match(/#\w+/g)
                     if (matches != null) {
-                      hashtag_number_arr.push(matches.length)
+                        hashtag_number_arr.push(matches.length)
                     }
                 }
             })
@@ -119,15 +118,18 @@ var apiApp = new Vue({
 
             })
             for (var key in apiApp.hashtags_dict) {
-                    apiApp.hashtags_array.push({"value": key, "count": apiApp.hashtags_dict[key]})
-                }
-                
-             apiApp.hashtags_array.sort(function(a,b) {
-                    return b.count - a.count
+                apiApp.hashtags_array.push({
+                    "value": key,
+                    "count": apiApp.hashtags_dict[key]
                 })
-            apiApp.map_cities_data[city].most_used_hasthags = apiApp.hashtags_array.slice(0,9)
+            }
+
+            apiApp.hashtags_array.sort(function (a, b) {
+                return b.count - a.count
+            })
+            apiApp.map_cities_data[city].most_used_hasthags = apiApp.hashtags_array.slice(0, 9)
         },
-        
+
         averageTextLength: function (city, data) {
             var text_length_arr = []
             data.edges.forEach(function (element) {
@@ -135,21 +137,21 @@ var apiApp = new Vue({
                     var text = element.node.edge_media_to_caption.edges[0].node.text
                     var text_length = text.length
                     text_length_arr.push(text_length)
-                    }
-        })
+                }
+            })
             var text_sum = text_length_arr.reduce(function (a, b) {
                 return a + b
             })
             apiApp.map_cities_data[city].average_text_length = text_sum / text_length_arr.length
         }
-                            
+
     },
 
     created: function () {
         if (window.location.href.includes("#access_token")) {
             this.access_token = this.getAccessToken()
             this.getDataForAllCities()
-            
+
         }
 
 
