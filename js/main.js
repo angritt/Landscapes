@@ -100,6 +100,7 @@ var app = new Vue({
                 $("#map").show(2000);
                 $("#map_button").html("Hide Map");
                 $("#all_filter").show();
+                $("#picsContainer").hide();
                 
                 app.scrollTop();
 //            })
