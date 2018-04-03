@@ -69,7 +69,7 @@ var apiApp = new Vue({
                         apiApp.selected_id = apiApp.location_response[0].id
 
                         $.getJSON("https://www.instagram.com/explore/locations/" + apiApp.selected_id + "/?__a=1", function (data) {
-                                apiApp.picturesData = data.graphql.hashtag.edge_hashtag_to_media.edges;
+                                apiApp.picturesData = data.graphql.location.edge_location_to_media;
                                 apiApp.ratedPics = apiApp.decreasingOrder(apiApp.picturesData); //this actually puts the elements in a decreasing order
 
                                 apiApp.sorted_hashtags_array = apiApp.getSortedHashtags(apiApp.ratedPics)
