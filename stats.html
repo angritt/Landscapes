@@ -45,7 +45,7 @@
 
 
                 <ul id="hashtagsList" class="nav-pills nav-justified">
-                    <li><a href="" class="btn btn-primary" id="map_button"> </a> </li>
+                    <li><a class="btn btn-primary" id="map_button"> </a> </li>
                     <li v-for="hashtag in sorted_hashtags_array.slice(1,10)"><input type="button" v-on:click="hashtagFilter" v-bind:value="hashtag.value" class="btn btn-default"></li>
                     <li><input type="button" class="btn btn-primary" v-on:click="hashtagFilter" id="all_filter" value="All"></li>
                 </ul>
