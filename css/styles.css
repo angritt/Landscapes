@@ -36,9 +36,21 @@ body{
 
 #footer{
   margin-top: 1%;
-   display: flex;
-   align-content: center;
+  display: flex;
+  align-content: center;
+  justify-content: center
     
+}
+
+ul, menu, dir {
+    display: block;
+    list-style-type: disc;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 15px !important;
+/*    float: right;*/
 }
 
 
