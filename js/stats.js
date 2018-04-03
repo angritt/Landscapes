@@ -84,9 +84,9 @@ var apiApp = new Vue({
                         apiApp.selected_id = element.id
                     }
                 })
-                 console.log(apiApp.selected_id)
-                if (apiApp.selected_id == "") {
-                    for (var i; i < apiApp.location_response.length; i++) {
+                console.log(apiApp.selected_id.length)
+                if (apiApp.selected_id.length === 0) {
+                    for (var i = 0; i < apiApp.location_response.length; i++) {
                         if (apiApp.location_response[i].id != 0) {
                             apiApp.selected_id = apiApp.location_response[i].id;
                             break;
