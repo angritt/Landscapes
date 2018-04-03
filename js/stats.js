@@ -78,14 +78,17 @@ var apiApp = new Vue({
             apiApp.ratedPics = []
             $.getJSON("https://api.instagram.com/v1/locations/search?lat=" + lat + "&lng=" + long + "&access_token=" + apiApp.access_token, function (data) {
                 apiApp.location_response = data.data
-
+                apiApp.selected_id = ""
                 apiApp.location_response.forEach(function (element) {
                     if (element.name === (apiApp.capital_name + ", " + apiApp.country_name)) {
                         apiApp.selected_id = element.id
                     }
                 })
-                console.log(apiApp.location_response)
-                console.log(apiApp.selected_id)
+                
+                if (apiApp.selected_id.length === 0) {
+                        apiApp.selected_id = apiApp.location_response[0].id
+                    
+                }
 
                 $.getJSON("https://www.instagram.com/explore/locations/" + apiApp.selected_id + "/?__a=1", function (data) {
                     apiApp.picturesData = data.graphql.location.edge_location_to_media.edges;
