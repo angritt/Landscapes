@@ -1,0 +1,1 @@
+it' shown  when no #pic is there (on load of the pics)
