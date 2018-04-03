@@ -86,7 +86,9 @@ var apiApp = new Vue({
                 if (element.node.edge_media_to_caption.edges.length != 0) {
                     var text = element.node.edge_media_to_caption.edges[0].node.text
                     var matches = text.match(/#\w+/g)
-                    hashtag_number_arr.push(matches.length)
+                    if (matches != null) {
+                      hashtag_number_arr.push(matches.length)
+                    }
                 }
             })
             var hastag_sum = hashtag_number_arr.reduce(function (a, b) {
