@@ -84,10 +84,15 @@ var apiApp = new Vue({
                         apiApp.selected_id = element.id
                     }
                 })
-                
+
                 if (apiApp.selected_id.length === 0) {
-                        apiApp.selected_id = apiApp.location_response[0].id
-                    
+                    for (var i; i < apiApp.location_response.length; i++) {
+                        if (apiApp.location_response[i].id != 0) {
+                            apiApp.selected_id = apiApp.location_response[i].id;
+                            break;
+                        }
+
+                    }
                 }
 
                 $.getJSON("https://www.instagram.com/explore/locations/" + apiApp.selected_id + "/?__a=1", function (data) {
