@@ -44,13 +44,19 @@ var apiApp = new Vue({
                     onRegionClick: function (e, code) {
                         apiApp.countries_location.forEach(function (element) {
                             if (code === "XK") {
-                                code = "KO"
-                            }
-                            if (element.CountryCode === code) {
-                                apiApp.lat = element.CapitalLatitude
-                                apiApp.long = element.CapitalLongitude
-                                apiApp.country_name = element.CountryName
-                                apiApp.capital_name = element.CapitalName
+                                if (element.CountryCode === "KO") {
+                                    apiApp.lat = element.CapitalLatitude
+                                    apiApp.long = element.CapitalLongitude
+                                    apiApp.country_name = element.CountryName
+                                    apiApp.capital_name = element.CapitalName
+                                }
+                            } else {
+                                if (element.CountryCode === code) {
+                                    apiApp.lat = element.CapitalLatitude
+                                    apiApp.long = element.CapitalLongitude
+                                    apiApp.country_name = element.CountryName
+                                    apiApp.capital_name = element.CapitalName
+                                }
                             }
                         })
                         apiApp.getPictures(apiApp.lat, apiApp.long);
@@ -71,136 +77,136 @@ var apiApp = new Vue({
         getPictures: function (lat, long) {
             apiApp.ratedPics = []
             $.getJSON("https://api.instagram.com/v1/locations/search?lat=" + lat + "&lng=" + long + "&access_token=" + apiApp.access_token, function (data) {
-                        apiApp.location_response = data.data
-                        
-                        apiApp.location_response.forEach(function(element) {
-                            if (element.name === (apiApp.capital_name + ", " + apiApp.country_name)) {
-                                apiApp.selected_id = element.id
-                            }
-                        })
-                         
-                        console.log(apiApp.selected_id)
+                apiApp.location_response = data.data
 
-                        $.getJSON("https://www.instagram.com/explore/locations/" + apiApp.selected_id + "/?__a=1", function (data) {
-                                apiApp.picturesData = data.graphql.location.edge_location_to_media.edges;
-                                apiApp.ratedPics = apiApp.decreasingOrder(apiApp.picturesData); //this actually puts the elements in a decreasing order
-
-                                apiApp.sorted_hashtags_array = apiApp.getSortedHashtags(apiApp.ratedPics)
-                                apiApp.please_wait();
-                                console.log(apiApp.ratedPics[1]);
-                            })
-
-
-
-
-
-
-                        })
-
-                },
-
-                please_wait: function () {
-                    if ($("#pic")) {
-                        $("#waitBox").hide();
-                        $("#footer").show();
+                apiApp.location_response.forEach(function (element) {
+                    if (element.name === (apiApp.capital_name + ", " + apiApp.country_name)) {
+                        apiApp.selected_id = element.id
                     }
-                },
+                })
+
+                console.log(apiApp.selected_id)
+
+                $.getJSON("https://www.instagram.com/explore/locations/" + apiApp.selected_id + "/?__a=1", function (data) {
+                    apiApp.picturesData = data.graphql.location.edge_location_to_media.edges;
+                    apiApp.ratedPics = apiApp.decreasingOrder(apiApp.picturesData); //this actually puts the elements in a decreasing order
+
+                    apiApp.sorted_hashtags_array = apiApp.getSortedHashtags(apiApp.ratedPics)
+                    apiApp.please_wait();
+                    console.log(apiApp.ratedPics[1]);
+                })
 
 
 
-                hide_show_map: function () {
-                    $("#map_button").click(function () {
-                        if ($("#map_button").html() == "Hide Map") {
-                            apiApp.hideMap();
-                        } else {
-                            apiApp.showMap()
-                        }
-                    })
-                },
 
 
-                hideMap: function () { //function to hide the map and show the toggle button
-                    $("#map").hide(2000);
-                    $("#map_button").html("Show Map");
-                    $("#all_filter").show();
-                    $("#picsContainer").show();
-                },
 
-                showMap: function () { // shows the map on button click
-                    $("#map").show(2000);
-                    $("#map_button").html("Hide Map");
-                    $("#all_filter").show();
-                    $("#picsContainer").hide();
-
-                    apiApp.scrollTop();
-                    //            })
-                },
-
-                decreasingOrder: function (array) {
-                    var array_copy = array.slice()
-                    array_copy.sort(function (a, b) {
-                        return b.node.edge_liked_by.count - a.node.edge_liked_by.count
-                    });
-                    return array_copy
-                },
-
-
-                scrollTop: function () { // to go at the beginning of the page each time I show the map again
-                    $('html,body').animate({ // it will animate all html body 
-                        scrollTop: $('#startContainer').offset().top
-                    }, 'slow'); // get the other id where you want the page to scroll to. then offset the page and slow the animation.the only options available to offset are top and left for some reason. 
-
-
-                },
-
-                getSortedHashtags: function (picsArray) {
-                    apiApp.hashtags_dict = {}
-                    apiApp.hashtags_array = []
-                    picsArray.forEach(function (element) {
-                        if (element.node.edge_media_to_caption.edges.length != 0) {
-                            var text = element.node.edge_media_to_caption.edges[0].node.text
-                            var matches = text.match(/#\w+/g)
-                            if (matches != null) {
-                                matches.forEach(function (item) {
-                                    if (item in apiApp.hashtags_dict) {
-                                        apiApp.hashtags_dict[item] += 1
-                                    } else {
-                                        apiApp.hashtags_dict[item] = 1
-                                    }
-                                })
-                            }
-                        }
-                        element.node.edge_media_to_caption.edges.push({
-                            "node": {
-                                "text": ""
-                            }
-                        })
-
-                    })
-                    for (var key in apiApp.hashtags_dict) {
-                        apiApp.hashtags_array.push({
-                            "value": key,
-                            "count": apiApp.hashtags_dict[key]
-                        })
-                    }
-
-                    return apiApp.hashtags_array.sort(function (a, b) {
-                        return b.count - a.count
-                    })
-
-                },
-
-                hashtagFilter: function (event) {
-                    apiApp.filterValue = $(event.target).val();
-
-                    // make the map disappear when clicking on the ashtag button:
-                    $("#map").hide(2000);
-                    $("#map_button").html("Show Map")
-                    $("#picsContainer").show();
-
-                }
+            })
 
         },
 
+        please_wait: function () {
+            if ($("#pic")) {
+                $("#waitBox").hide();
+                $("#footer").show();
+            }
+        },
 
-    })
+
+
+        hide_show_map: function () {
+            $("#map_button").click(function () {
+                if ($("#map_button").html() == "Hide Map") {
+                    apiApp.hideMap();
+                } else {
+                    apiApp.showMap()
+                }
+            })
+        },
+
+
+        hideMap: function () { //function to hide the map and show the toggle button
+            $("#map").hide(2000);
+            $("#map_button").html("Show Map");
+            $("#all_filter").show();
+            $("#picsContainer").show();
+        },
+
+        showMap: function () { // shows the map on button click
+            $("#map").show(2000);
+            $("#map_button").html("Hide Map");
+            $("#all_filter").show();
+            $("#picsContainer").hide();
+
+            apiApp.scrollTop();
+            //            })
+        },
+
+        decreasingOrder: function (array) {
+            var array_copy = array.slice()
+            array_copy.sort(function (a, b) {
+                return b.node.edge_liked_by.count - a.node.edge_liked_by.count
+            });
+            return array_copy
+        },
+
+
+        scrollTop: function () { // to go at the beginning of the page each time I show the map again
+            $('html,body').animate({ // it will animate all html body 
+                scrollTop: $('#startContainer').offset().top
+            }, 'slow'); // get the other id where you want the page to scroll to. then offset the page and slow the animation.the only options available to offset are top and left for some reason. 
+
+
+        },
+
+        getSortedHashtags: function (picsArray) {
+            apiApp.hashtags_dict = {}
+            apiApp.hashtags_array = []
+            picsArray.forEach(function (element) {
+                if (element.node.edge_media_to_caption.edges.length != 0) {
+                    var text = element.node.edge_media_to_caption.edges[0].node.text
+                    var matches = text.match(/#\w+/g)
+                    if (matches != null) {
+                        matches.forEach(function (item) {
+                            if (item in apiApp.hashtags_dict) {
+                                apiApp.hashtags_dict[item] += 1
+                            } else {
+                                apiApp.hashtags_dict[item] = 1
+                            }
+                        })
+                    }
+                }
+                element.node.edge_media_to_caption.edges.push({
+                    "node": {
+                        "text": ""
+                    }
+                })
+
+            })
+            for (var key in apiApp.hashtags_dict) {
+                apiApp.hashtags_array.push({
+                    "value": key,
+                    "count": apiApp.hashtags_dict[key]
+                })
+            }
+
+            return apiApp.hashtags_array.sort(function (a, b) {
+                return b.count - a.count
+            })
+
+        },
+
+        hashtagFilter: function (event) {
+            apiApp.filterValue = $(event.target).val();
+
+            // make the map disappear when clicking on the ashtag button:
+            $("#map").hide(2000);
+            $("#map_button").html("Show Map")
+            $("#picsContainer").show();
+
+        }
+
+    },
+
+
+})
