@@ -62,6 +62,7 @@ var apiApp = new Vue({
                 apiApp.location_response.forEach(function (item) {
                     if (item.name.includes(apiApp.country_name)) {
                         apiApp.selected_id = item.id
+                        console.log(apiApp.selected_id)
                     }
                 })
                 $.getJSON("https://www.instagram.com/explore/locations/" + apiApp.selected_id + "/?__a=1", function (data) {
