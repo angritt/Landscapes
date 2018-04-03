@@ -37,7 +37,7 @@ var app = new Vue({
                         app.hideMap();
                         $("#map_button").show();
                         $("#waitBox").show();//i had to do this instead of calling it in the function "please_wait"
-                        $("#countryName").html(": #" + app.code_and_name[code])
+                        $("#countryName").html(" #" + app.code_and_name[code])
                         $("#footer").hide(); // why does it work here and not at the beginning of the function???
 
                     }

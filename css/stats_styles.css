@@ -2,3 +2,12 @@
 #startContainer {
     display: none;
 }
+
+#apiApp {
+  background-color: rgba(255, 255, 255, 0.5); 
+}
+
+#Logindiv {
+    padding: 10%;
+    align-content: center;
+}

@@ -9,23 +9,32 @@
     <!-- BOOTSTRAP: the following is for MOBILE: ensure proper rendering and touch-zooming -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/jquery-jvectormap-2.0.3.css">
-    <link rel="stylesheet" href="css/stats_styles.css">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/stats_styles.css">
 </head>
 
 <body>
 
     <div id="apiApp" class="container">
         <div class="row">
-            <h2>Instagram data per capital city <span id="cityName"></span></h2>
-            
+            <h1>Instagram Geo Navigator</h1>
+        </div>
+        <div class="row">
+            <nav class="navbar navbar-light bg-light justify-content-between">
+                <a href="index.html" class="navbar-brand">Explore Country Hashtags</a>
+                <a href="" class="navbar-brand">Explore City Location</a>
+            </nav>
         </div>
         <div class="row" id="Logindiv">
-           <h3>Please log in to access the data per capital city!</h3>
+            <h3>Please sign in to your instagram account to access the data per capital city!</h3>
             <a href="https://api.instagram.com/oauth/authorize/?client_id=2260f74aec874e31895b9f2c641842ac&redirect_uri=https://eloisa-r.github.io/Landscapes/stats.html&response_type=token&scope=public_content">Login</a>
         </div>
 
         <div id="startContainer">
+            <div class="row card">
+                <h2>Instagram pics taken <span id="cityName"></span></h2>
+
+            </div>
             <div class="row" id="mapContainer">
 
                 <div id="map">
@@ -36,7 +45,7 @@
 
 
                 <ul id="hashtagsList" class="nav-pills nav-justified">
-                    <li><a href="#map" class="btn btn-primary" id="map_button"> </a> </li>
+                    <li><a href="" class="btn btn-primary" id="map_button"> </a> </li>
                     <li v-for="hashtag in sorted_hashtags_array.slice(1,10)"><input type="button" v-on:click="hashtagFilter" v-bind:value="hashtag.value" class="btn btn-default"></li>
                     <li><input type="button" class="btn btn-primary" v-on:click="hashtagFilter" id="all_filter" value="All"></li>
                 </ul>
@@ -98,7 +107,7 @@
 
     <script src="js/jquery-jvectormap-2.0.3.min.js"></script>
     <script src="js/jquery-jvectormap-europe-mill.js"></script>
-    <script src="js/stats_test.js"></script>
+    <script src="js/stats.js"></script>
 </body>
 
 </html>
