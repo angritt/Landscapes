@@ -44,7 +44,7 @@ var apiApp = new Vue({
                     onRegionClick: function (e, code) {
                         apiApp.countries_location.forEach(function (element) {
                             if (code === "XK") {
-                                code === "KO"
+                                code = "KO"
                             }
                             if (element.CountryCode === code) {
                                 apiApp.lat = element.CapitalLatitude
