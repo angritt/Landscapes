@@ -43,6 +43,9 @@ var apiApp = new Vue({
                     map: 'europe_mill',
                     onRegionClick: function (e, code) {
                         apiApp.countries_location.forEach(function (element) {
+                            if (code === "XK") {
+                                code === "KO"
+                            }
                             if (element.CountryCode === code) {
                                 apiApp.lat = element.CapitalLatitude
                                 apiApp.long = element.CapitalLongitude
