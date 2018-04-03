@@ -85,7 +85,8 @@ body{
 }
 
 #please_wait{
-    margin-left:40%;
+/*    margin-left:40%;*/
+    z-index:10;
 }
 
 
