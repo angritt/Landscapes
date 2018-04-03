@@ -67,6 +67,8 @@ var apiApp = new Vue({
                         apiApp.location_response = data.data
 
                         apiApp.selected_id = apiApp.location_response[0].id
+                         
+                        console.log(apiApp.selected_id)
 
                         $.getJSON("https://www.instagram.com/explore/locations/" + apiApp.selected_id + "/?__a=1", function (data) {
                                 apiApp.picturesData = data.graphql.location.edge_location_to_media;
